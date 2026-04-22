@@ -23,6 +23,7 @@ import edu.utap.flavorquest.ui.theme.Purple
 fun RestaurantCard(
     restaurant: Restaurant,
     onViewDetails: () -> Unit,
+    onRemove: (() -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -182,13 +183,27 @@ fun RestaurantCard(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 // Only View Details button — Get Directions removed
-                Button(
-                    onClick = onViewDetails,
-                    colors = ButtonDefaults.buttonColors(containerColor = Purple),
-                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 4.dp),
-                    shape = RoundedCornerShape(6.dp)
-                ) {
-                    Text("View Details", style = MaterialTheme.typography.labelMedium)
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Button(
+                        onClick = onViewDetails,
+                        colors = ButtonDefaults.buttonColors(containerColor = Purple),
+                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 4.dp),
+                        shape = RoundedCornerShape(6.dp),
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Text("View Details", style = MaterialTheme.typography.labelMedium)
+                    }
+
+                    if (onRemove != null) {
+                        OutlinedButton(
+                            onClick = onRemove,
+                            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 4.dp),
+                            shape = RoundedCornerShape(6.dp),
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            Text("Remove", style = MaterialTheme.typography.labelMedium)
+                        }
+                    }
                 }
             }
         }

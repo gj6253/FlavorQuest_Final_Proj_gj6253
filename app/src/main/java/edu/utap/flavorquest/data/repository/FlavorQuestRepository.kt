@@ -32,8 +32,10 @@ class FlavorQuestRepository(
     suspend fun getRecipeById(id: Long): Recipe? = recipeDao.getRecipeById(id)
 
     // Restaurants
-    val favoriteRestaurants: Flow<List<Restaurant>> = restaurantDao.getFavoriteRestaurants()
-    val allRestaurants: Flow<List<Restaurant>> = restaurantDao.getAllRestaurants()
+    fun favoriteRestaurants(userId: String): Flow<List<Restaurant>> = 
+        restaurantDao.getFavoriteRestaurants(userId)
+    fun allRestaurants(userId: String): Flow<List<Restaurant>> = 
+        restaurantDao.getAllRestaurants(userId)
 
     suspend fun insertRestaurant(restaurant: Restaurant): Long =
         restaurantDao.insertRestaurant(restaurant)
@@ -43,6 +45,8 @@ class FlavorQuestRepository(
         restaurantDao.deleteRestaurant(restaurant)
     suspend fun toggleRestaurantFavorite(id: Long, isFavorite: Boolean) =
         restaurantDao.updateFavoriteStatus(id, isFavorite)
+    suspend fun deleteAllFavoriteRestaurants(userId: String) = 
+        restaurantDao.deleteAllFavorites(userId)
 
     // Search History
     fun getAllHistory(userId: String): Flow<List<SearchHistory>> = searchHistoryDao.getAllHistory(userId)

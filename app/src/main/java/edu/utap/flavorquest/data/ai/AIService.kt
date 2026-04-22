@@ -30,7 +30,7 @@ data class RecipeResponse(
     val calories: String
 )
 
-class AIService(private val apiKey: String = "AIzaSyDFhPCRmCLZEDh7aIw2hxYnXpw186qd4DQ") {
+class AIService(private val apiKey: String = "AIzaSyATLJ-12MciKlOe4psDw_WI_vj-e1x5A18") {
 
     private val placesApiKey = "AIzaSyDA1KobvVipkAdL84bY0TCDVmia7x2maWI"
 

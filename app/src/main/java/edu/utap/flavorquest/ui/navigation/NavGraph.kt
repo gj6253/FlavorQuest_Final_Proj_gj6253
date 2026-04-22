@@ -245,6 +245,9 @@ fun FlavorQuestNavGraph(
                     },
                     onViewRestaurantDetails = { restaurant ->
                         favoritesViewModel.selectRestaurantFromFavorites(restaurant)
+                    },
+                    onRemoveRestaurant = { restaurant ->
+                        favoritesViewModel.removeRestaurantFromFavorites(restaurant)
                     }
                 )
             }

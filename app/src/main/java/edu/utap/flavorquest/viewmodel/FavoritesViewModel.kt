@@ -42,7 +42,12 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
     val uiState: StateFlow<FavoritesUiState> = _uiState.asStateFlow()
 
     init {
+        val user = Firebase.auth.currentUser
+        val userId = user?.uid ?: ""
+        
         loadSavedRecipesFromFirestore()
+        loadSavedRestaurantsFromFirestore()
+        
         viewModelScope.launch {
             repository.favoriteRecipes.collect { recipes ->
                 Log.d("FavoritesViewModel", "Observed ${recipes.size} favorite recipes from local DB")
@@ -50,8 +55,58 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
             }
         }
         viewModelScope.launch {
-            repository.favoriteRestaurants.collect { restaurants ->
+            repository.favoriteRestaurants(userId).collect { restaurants ->
                 _uiState.value = _uiState.value.copy(savedRestaurants = restaurants)
+            }
+        }
+    }
+
+    private fun loadSavedRestaurantsFromFirestore() {
+        viewModelScope.launch {
+            try {
+                val user = Firebase.auth.currentUser
+                if (user == null) return@launch
+
+                val firestore = Firebase.firestore
+                val snapshot = firestore.collection("users").document(user.uid)
+                    .collection("restaurants")
+                    .get()
+                    .await()
+
+                // Clear existing local favorites for this user to ensure sync
+                repository.deleteAllFavoriteRestaurants(user.uid)
+
+                snapshot.documents.forEach { doc ->
+                    try {
+                        val restaurant = Restaurant(
+                            userId = user.uid,
+                            name = doc.getString("name") ?: "",
+                            rating = (doc.getDouble("rating") ?: 0.0).toFloat(),
+                            distance = doc.getString("distance") ?: "",
+                            priceLevel = (doc.getLong("priceLevel") ?: 2).toInt(),
+                            cuisine = doc.getString("cuisine") ?: "",
+                            type = doc.getString("type") ?: "",
+                            amenities = doc.getString("amenities") ?: "",
+                            imageUrl = doc.getString("imageUrl") ?: "",
+                            address = doc.getString("address") ?: "",
+                            phone = doc.getString("phone") ?: "",
+                            websiteUrl = doc.getString("websiteUrl") ?: "",
+                            latitude = doc.getDouble("latitude") ?: 0.0,
+                            longitude = doc.getDouble("longitude") ?: 0.0,
+                            placeId = doc.id,
+                            liveMusic = doc.getBoolean("liveMusic") ?: false,
+                            craftBeer = doc.getBoolean("craftBeer") ?: false,
+                            outdoorPatio = doc.getBoolean("outdoorPatio") ?: false,
+                            isFavorite = true,
+                            savedAt = doc.getLong("timestamp") ?: System.currentTimeMillis()
+                        )
+                        repository.insertRestaurant(restaurant)
+                    } catch (e: Exception) {
+                        Log.e("FavoritesViewModel", "Error syncing restaurant doc: ${doc.id}", e)
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e("FavoritesViewModel", "Failed to load restaurants from Firestore", e)
             }
         }
     }
@@ -225,7 +280,35 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
 
     fun removeRestaurantFromFavorites(restaurant: Restaurant) {
         viewModelScope.launch {
-            repository.toggleRestaurantFavorite(restaurant.id, false)
+            _uiState.value = _uiState.value.copy(isLoading = true)
+            try {
+                val user = Firebase.auth.currentUser ?: throw Exception("User not authenticated")
+                val firestore = Firebase.firestore
+
+                // 1. Delete from Firestore
+                val docId = restaurant.placeId.ifBlank { restaurant.name }
+                firestore.collection("users").document(user.uid)
+                    .collection("restaurants")
+                    .document(docId)
+                    .delete()
+                    .await()
+                Log.d("FavoritesViewModel", "Deleted restaurant from Firestore: $docId")
+
+                // 2. Delete from local Room DB
+                repository.deleteRestaurant(restaurant)
+                Log.d("FavoritesViewModel", "Deleted restaurant from local DB: ${restaurant.name}")
+
+                _uiState.value = _uiState.value.copy(
+                    isLoading = false,
+                    error = "Restaurant removed successfully"
+                )
+            } catch (e: Exception) {
+                Log.e("FavoritesViewModel", "Failed to remove restaurant", e)
+                _uiState.value = _uiState.value.copy(
+                    isLoading = false,
+                    error = "Failed to remove restaurant: ${e.message}"
+                )
+            }
         }
     }
 }

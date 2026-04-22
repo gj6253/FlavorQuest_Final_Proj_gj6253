@@ -14,7 +14,7 @@ import edu.utap.flavorquest.data.model.SearchHistory
 
 @Database(
     entities = [Recipe::class, Restaurant::class, SearchHistory::class],
-    version = 4,
+    version = 5,
     exportSchema = false
 )
 @TypeConverters(Converters::class)

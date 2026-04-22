@@ -62,7 +62,12 @@ class RestaurantViewModel(application: Application) : AndroidViewModel(applicati
 
     fun saveRestaurant(restaurant: Restaurant) {
         viewModelScope.launch {
-            val restaurantToSave = restaurant.copy(isFavorite = true, savedAt = System.currentTimeMillis())
+            val user = FirebaseAuth.getInstance().currentUser
+            val restaurantToSave = restaurant.copy(
+                userId = user?.uid ?: "",
+                isFavorite = true, 
+                savedAt = System.currentTimeMillis()
+            )
             repository.insertRestaurant(restaurantToSave)
             saveRestaurantToFirestore(restaurantToSave)
         }

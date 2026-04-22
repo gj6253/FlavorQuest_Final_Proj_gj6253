@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "restaurants")
 data class Restaurant(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    val userId: String = "",       // Firebase UID
     val name: String,
     val rating: Float,
     val distance: String,

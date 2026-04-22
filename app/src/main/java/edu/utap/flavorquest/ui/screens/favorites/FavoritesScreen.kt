@@ -23,7 +23,8 @@ fun FavoritesScreen(
     onTabSelected: (Int) -> Unit,
     onViewRecipe: (Recipe) -> Unit,
     onRemoveRecipe: (Recipe) -> Unit,
-    onViewRestaurantDetails: (Restaurant) -> Unit
+    onViewRestaurantDetails: (Restaurant) -> Unit,
+    onRemoveRestaurant: (Restaurant) -> Unit
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         // Header
@@ -107,7 +108,8 @@ fun FavoritesScreen(
                         items(uiState.savedRestaurants) { restaurant ->
                             RestaurantCard(
                                 restaurant = restaurant,
-                                onViewDetails = { onViewRestaurantDetails(restaurant) }
+                                onViewDetails = { onViewRestaurantDetails(restaurant) },
+                                onRemove = { onRemoveRestaurant(restaurant) }
                             )
                         }
                     }

@@ -6,11 +6,14 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface RestaurantDao {
-    @Query("SELECT * FROM restaurants WHERE isFavorite = 1 ORDER BY savedAt DESC")
-    fun getFavoriteRestaurants(): Flow<List<Restaurant>>
+    @Query("SELECT * FROM restaurants WHERE isFavorite = 1 AND userId = :userId ORDER BY savedAt DESC")
+    fun getFavoriteRestaurants(userId: String): Flow<List<Restaurant>>
 
-    @Query("SELECT * FROM restaurants ORDER BY savedAt DESC")
-    fun getAllRestaurants(): Flow<List<Restaurant>>
+    @Query("SELECT * FROM restaurants WHERE userId = :userId ORDER BY savedAt DESC")
+    fun getAllRestaurants(userId: String): Flow<List<Restaurant>>
+
+    @Query("DELETE FROM restaurants WHERE isFavorite = 1 AND userId = :userId")
+    suspend fun deleteAllFavorites(userId: String)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRestaurant(restaurant: Restaurant): Long
