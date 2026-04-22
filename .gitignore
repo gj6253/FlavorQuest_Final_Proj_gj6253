@@ -1,0 +1,35 @@
+# Android Studio / IntelliJ
+*.iml
+.gradle
+/local.properties
+/.idea/
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+app/build/**
+
+# Project specific
+google-services.json
+local.properties
+
+# Build outputs
+**/build/
+*.apk
+*.aar
+*.ap_
+*.dex
+*.class
+
+# Log files
+*.log
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Other
+*.tab
+*.swp
+*.swo

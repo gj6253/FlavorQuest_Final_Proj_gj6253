@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Flavor Quest</string>
+    <string name="tagline">Your AI Meal Companion</string>
+
+    <!-- Auth -->
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="full_name">Full Name</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="log_out">Log Out</string>
+
+    <!-- Home -->
+    <string name="how_are_you_feeling">How are you feeling?</string>
+    <string name="the_plan">The Plan</string>
+    <string name="cook_at_home">Cook at Home</string>
+    <string name="order_out">Order Out</string>
+    <string name="cooking_profile">Cooking Profile</string>
+    <string name="any_allergies">Any Allergies?</string>
+    <string name="specific_ingredient">Specific Ingredient?</string>
+    <string name="cooking_time">Cooking Time</string>
+    <string name="calories">Calories</string>
+    <string name="generate_suggestions">Generate Recipes &amp; Restaurant Ideas</string>
+
+    <!-- Recipe -->
+    <string name="recipe_suggestions">Recipe Suggestions</string>
+    <string name="view_recipe">View Recipe</string>
+    <string name="save">Save</string>
+
+    <!-- Restaurant -->
+    <string name="restaurant_style">Restaurant Style:</string>
+    <string name="restaurant_type">Restaurant Type:</string>
+    <string name="order_by_price">Order by Price:</string>
+    <string name="filter_by_rating">Filter by Minimum Rating:</string>
+    <string name="advise_restaurants">Advise Restaurants</string>
+    <string name="view_details">View Details</string>
+    <string name="get_directions">Get Directions</string>
+
+    <!-- Favorites -->
+    <string name="favorites">Favorites</string>
+    <string name="saved_recipes">Saved Recipes</string>
+    <string name="saved_restaurants">Saved Restaurants</string>
+
+    <!-- History -->
+    <string name="history">History</string>
+    <string name="search_history">Search History</string>
+    <string name="new_search">New Search</string>
+
+    <!-- Profile -->
+    <string name="profile">Profile</string>
+    <string name="personal_info">Personal Info</string>
+    <string name="meal_preferences">Meal Preferences</string>
+    <string name="notification_settings">Notification Settings</string>
+    <string name="help_support">Help &amp; Support</string>
+    <string name="rate_us">Rate Us</string>
+    <string name="about">About Flavor Quest</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_favorites">Favorites</string>
+    <string name="nav_history">History</string>
+    <string name="nav_profile">Profile</string>
+</resources>
